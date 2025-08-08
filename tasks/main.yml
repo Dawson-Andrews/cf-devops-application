@@ -64,6 +64,7 @@
         url: "https://github.com/Dawson-Andrews/cf-devops-downloads/releases/download/v0.0.1/node_modules.tar.gz"
         dest: "/tmp/node_modules.tar.gz"
       when: npm_install and run_npm.stat.exists
+      become: true
 
     - name: Extract node_modules into application directory
       unarchive:
@@ -71,6 +72,7 @@
         dest: "{{ app_directory }}"
         remote_src: yes
       when: npm_install and run_npm.stat.exists
+      become: true
 
     - name: Set correct ownership on node_modules
       file:
@@ -79,6 +81,7 @@
         group: www-data
         recurse: yes
       when: npm_install and run_npm.stat.exists
+      become: true
 
     - name: npm run prod
       command: "npm run prod"
