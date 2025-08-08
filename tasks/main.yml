@@ -59,10 +59,25 @@
         path: "{{ app_directory }}/package.json"
       register: run_npm
 
-    - name: npm install
-      command: "npm install"
-      args:
-        chdir: "{{ app_directory }}"
+    - name: Download prebuilt node_modules from S3
+      get_url:
+        url: "https://github.com/Dawson-Andrews/cf-devops-downloads/releases/download/v0.0.1/node_modules.tar.gz"
+        dest: "/tmp/node_modules.tar.gz"
+      when: npm_install and run_npm.stat.exists
+
+    - name: Extract node_modules into application directory
+      unarchive:
+        src: "/tmp/node_modules.tar.gz"
+        dest: "{{ app_directory }}"
+        remote_src: yes
+      when: npm_install and run_npm.stat.exists
+
+    - name: Set correct ownership on node_modules
+      file:
+        path: "{{ app_directory }}/node_modules"
+        owner: www-data
+        group: www-data
+        recurse: yes
       when: npm_install and run_npm.stat.exists
 
     - name: npm run prod
