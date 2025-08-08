@@ -43,13 +43,6 @@
 - become: true
   become_user: "{{ app_user }}"
   block:
-    - name: Set bitbucket auth for private composer packages.
-      shell: "composer config --global --auth bitbucket-oauth.bitbucket.org {{ bitbucket_consumer_key }} {{ bitbucket_consumer_secret }}"
-      when:
-        - bitbucket_consumer_key != ""
-        - bitbucket_consumer_secret != ""
-        - run_composer.stat.exists
-
     - name: Composer Install.
       composer:
         command: install
