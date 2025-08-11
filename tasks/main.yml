@@ -94,6 +94,7 @@
 
     - name: Check nginx configuration syntax
       command: nginx -t
+      become: yes
       register: nginx_test
       ignore_errors: yes
 
