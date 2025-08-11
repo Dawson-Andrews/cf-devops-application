@@ -50,8 +50,8 @@
         working_dir: "{{ app_directory }}"
       when: run_composer.stat.exists
 
-    #- include_tasks: testing.yml
-    #- include_tasks: behat.yml
+    - include_tasks: testing.yml
+    - include_tasks: behat.yml
     - include_tasks: env.yml
 
     - name: Check if npm package.json exists
