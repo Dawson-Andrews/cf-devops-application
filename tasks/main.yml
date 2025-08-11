@@ -92,6 +92,13 @@
         chdir: "{{ app_directory }}"
       when: fact_craftcms_version | length > 0 and app_env.APP_KEY is not defined
 
+    - name: Check current user
+      command: whoami
+      register: whoami_result
+
+    - debug:
+        var: whoami_result.stdout
+
     - name: Check nginx configuration syntax
       command: nginx -t
       become: yes
