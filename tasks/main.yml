@@ -79,7 +79,7 @@
       when: run_composer.stat.exists
 
     - name: Cat vendor folder
-      command: cat {{ app_directory }}/vendor
+      command: ls -lah {{ app_directory }}/vendor
       register: vendor_folder_output
 
     - name: Show vendor output
