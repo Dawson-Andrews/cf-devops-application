@@ -92,6 +92,22 @@
         chdir: "{{ app_directory }}"
       when: fact_craftcms_version | length > 0 and app_env.APP_KEY is not defined
 
+    - name: Check nginx configuration syntax
+      command: nginx -t
+      register: nginx_test
+      ignore_errors: yes
+
+    - name: Fail if nginx config test failed
+      fail:
+        msg: "Nginx config test failed. See details:\n{{ nginx_test.stderr }}"
+      when: nginx_test.rc != 0
+
+    - name: Debug nginx test stdout and stderr
+      debug:
+        msg:
+          - "nginx -t stdout: {{ nginx_test.stdout }}"
+          - "nginx -t stderr: {{ nginx_test.stderr }}"
+
     - name: Artisan Key Generate.
       shell: 'php artisan key:generate'
       args:
