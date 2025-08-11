@@ -84,7 +84,7 @@
 
     - name: Show vendor output
       debug:
-        msg: "{{ vendor_file_output.stdout }}"
+        msg: "{{ vendor_folder_output.stdout }}"
 
     #- name: Craft Security Key Generate.
     #  shell: 'php craft setup/security-key'
