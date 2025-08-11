@@ -7,7 +7,17 @@
   with_dict: "{{ php_ini_values }}"
   when: php_ini_values is defined and php_ini_values | length > 0
 
+- name: Find PHP-FPM service name
+  shell: systemctl list-units --type=service --all | awk '/fpm/ {print $1; exit}'
+  register: php_fpm_service
+  changed_when: false
+
+- name: Fail if no PHP-FPM service found
+  fail:
+    msg: "No PHP-FPM service found on this host."
+  when: php_fpm_service.stdout == ""
+
 - name: Restart PHP-FPM
   service:
-    name: "php{{php_version}}-fpm"
+    name: "{{ php_fpm_service.stdout }}"
     state: restarted
