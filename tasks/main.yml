@@ -86,11 +86,11 @@
       debug:
         msg: "{{ vendor_folder_output.stdout }}"
 
-    #- name: Craft Security Key Generate.
-    #  shell: 'php craft setup/security-key'
-    #  args:
-    #    chdir: "{{ app_directory }}"
-    #  when: fact_craftcms_version | length > 0 and app_env.APP_KEY is not defined
+    - name: Craft Security Key Generate.
+      shell: 'php craft setup/security-key'
+      args:
+        chdir: "{{ app_directory }}"
+      when: fact_craftcms_version | length > 0 and app_env.APP_KEY is not defined
 
     - name: Artisan Key Generate.
       shell: 'php artisan key:generate'
