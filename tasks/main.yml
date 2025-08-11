@@ -65,11 +65,12 @@
         chdir: "{{ app_directory }}"
       when: npm_install and run_npm.stat.exists
 
-    - name: npm run prod
-      command: "npm run prod"
-      args:
-        chdir: "{{ app_directory }}"
-      when: npm_install and run_npm.stat.exists
+   # - name: npm run prod
+   #   command: "npm run prod"
+   #   args:
+   #     chdir: "{{ app_directory }}"
+   #   when: npm_install and run_npm.stat.exists
+   #   when: npm_install and run_npm.stat.exists
 
     - name: Composer install to remove dev dependecies.
       composer:
@@ -77,11 +78,19 @@
         working_dir: "{{ app_directory }}"
       when: run_composer.stat.exists
 
-    - name: Craft Security Key Generate.
-      shell: 'php craft setup/security-key'
-      args:
-        chdir: "{{ app_directory }}"
-      when: fact_craftcms_version | length > 0 and app_env.APP_KEY is not defined
+    - name: Cat a file
+      command: cat {{ app_directory }}/.env
+      register: file_output
+
+    - name: Show .env output
+      debug:
+        msg: "{{ file_output.stdout }}"
+
+    #- name: Craft Security Key Generate.
+    #  shell: 'php craft setup/security-key'
+    #  args:
+    #    chdir: "{{ app_directory }}"
+    #  when: fact_craftcms_version | length > 0 and app_env.APP_KEY is not defined
 
     - name: Artisan Key Generate.
       shell: 'php artisan key:generate'
