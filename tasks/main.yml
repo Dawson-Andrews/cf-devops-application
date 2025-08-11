@@ -50,8 +50,8 @@
         working_dir: "{{ app_directory }}"
       when: run_composer.stat.exists
 
-    - include_tasks: testing.yml
-    - include_tasks: behat.yml
+    #- include_tasks: testing.yml
+    #- include_tasks: behat.yml
     - include_tasks: env.yml
 
     - name: Check if npm package.json exists
@@ -59,11 +59,11 @@
         path: "{{ app_directory }}/package.json"
       register: run_npm
 
-    - name: npm install
-      command: "npm install"
-      args:
-        chdir: "{{ app_directory }}"
-      when: npm_install and run_npm.stat.exists
+   # - name: npm install
+   #   command: "npm install"
+   #   args:
+   #     chdir: "{{ app_directory }}"
+   #   when: npm_install and run_npm.stat.exists
 
    # - name: npm run prod
    #   command: "npm run prod"
@@ -78,13 +78,13 @@
         working_dir: "{{ app_directory }}"
       when: run_composer.stat.exists
 
-    - name: Cat a file
-      command: cat {{ app_directory }}/.env
-      register: file_output
+    - name: Cat vendor folder
+      command: cat {{ app_directory }}/vendor
+      register: vendor_folder_output
 
-    - name: Show .env output
+    - name: Show vendor output
       debug:
-        msg: "{{ file_output.stdout }}"
+        msg: "{{ vendor_file_output.stdout }}"
 
     #- name: Craft Security Key Generate.
     #  shell: 'php craft setup/security-key'
