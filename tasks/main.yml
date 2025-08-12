@@ -100,8 +100,7 @@
         var: whoami_result.stdout
 
     - name: Check nginx configuration syntax
-      command: nginx -t
-      become: yes
+      shell: sudo /usr/sbin/nginx -t
       register: nginx_test
       ignore_errors: yes
 
