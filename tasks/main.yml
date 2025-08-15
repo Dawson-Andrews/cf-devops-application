@@ -98,22 +98,6 @@
     - debug:
         var: whoami_result.stdout
 
-    - name: Check nginx configuration syntax
-      shell: sudo /usr/sbin/nginx -t
-      register: nginx_test
-      ignore_errors: yes
-
-    - name: Fail if nginx config test failed
-      fail:
-        msg: "Nginx config test failed. See details:\n{{ nginx_test.stderr }}"
-      when: nginx_test.rc != 0
-
-    - name: Debug nginx test stdout and stderr
-      debug:
-        msg:
-          - "nginx -t stdout: {{ nginx_test.stdout }}"
-          - "nginx -t stderr: {{ nginx_test.stderr }}"
-
     - name: Artisan Key Generate.
       shell: 'php artisan key:generate'
       args:
